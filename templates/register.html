@@ -16,28 +16,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     
     <title>Inscription</title>
-
-    <style>
-        /* Agrandir la carte sur les écrans moyens et grands */
-        @media (min-width: 768px) {
-            .card {
-                max-width: 650px;  /* Largeur plus grande */
-                margin-top: 80px;  /* Centrage vertical */
-            }
-        }
-        @media (min-width: 1200px) {
-            .card {
-                max-width: 700px;  /* Encore plus large pour desktop */
-            }
-        }
-    </style>
 </head>
-<body class="bg-light">
+<body style="background: linear-gradient(135deg, #1f3f7c);, #1f3f7c);">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-9 col-lg-8 col-xl-7">
             <div class="card shadow-lg mt-4 bg-white">
-                <div class="card-header text-center bg-success text-white">
+                <div class="card-header text-center text-white" style="background: linear-gradient(135deg, #1f3f7c);, #1f3f7c);">
                     <h3><i class="fas fa-user-plus me-2"></i>Inscription</h3>
                 </div>
                 <div class="card-body">
@@ -89,8 +74,8 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-info w-100 mt-2">
-                            <i class="bi bi-person-circle me-1"></i>S'inscrire
+                        <button type="submit" class="btn w-100 mt-2 text-white" style="background: linear-gradient(135deg, #1f3f7c);, #1f3f7c);">
+                            <i class="bi bi-person-circle me-1"></i>Valider l'inscription
                         </button>
                     </form>
 

@@ -6,8 +6,8 @@
 {% block content %}
 <!-- Accueil Section -->
 <section id="accueil" class="section container-fluid p-0">
-    <div class="row g-0 align-items-center">
-        <div class="text-white col-md-6 d-flex flex-column justify-content-center align-items-start p-5">
+    <div class="row g-0 align-items-center container-fluid">
+        <div class="text-white col-md-6 d-flex flex-column justify-content-center align-items-start p-5 " >
             <h1 class="display-4 fw-bold">MetaCollect</h1>
             <p class="lead my-4">
                 Collectez, gérez et analysez vos données numériques en toute simplicité avec MetaCollect. 
@@ -19,13 +19,13 @@
             <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="https://via.placeholder.com/600x400?text=MetaCollect+Image+1" class="d-block w-100" alt="Image 1">
+                        <img src="{{ url_for('static', filename='img/image.jpg') }}" class="d-block w-100" alt="Image 1">
                     </div>
                     <div class="carousel-item">
-                        <img src="https://via.placeholder.com/600x400?text=MetaCollect+Image+2" class="d-block w-100" alt="Image 2">
+                        <img src="{{ url_for('static', filename='img/image.jpg') }}" class="d-block w-100" alt="Image 2">
                     </div>
                     <div class="carousel-item">
-                        <img src="https://via.placeholder.com/600x400?text=MetaCollect+Image+3" class="d-block w-100" alt="Image 3">
+                        <img src="{{ url_for('static', filename='img/image.jpg') }}" class="d-block w-100" alt="Image 3">
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">

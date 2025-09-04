@@ -64,15 +64,16 @@ h1, h2, h3, h4, h6, p,  a ,marquee{
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+  font-size: larger !important;
 }
 
 /* *****************************Many Section ******************** */
 .theme-bg{
-    background: linear-gradient(135deg, #0a1f3c, #1f3f7c);
+  background: linear-gradient(135deg, #0a1f3c, #1f3f7c);
 }
 .theme-bg-transparent{
-    background: linear-gradient(135deg, #0a1f3caf, #1f3f7caf);
-    transition: 1s all cubic-bezier(.47, 1.64, .41, .8) !important;
+  background: linear-gradient(135deg, #0a1f3caf, #1f3f7caf);
+  transition: 1s all cubic-bezier(.47, 1.64, .41, .8) !important;
 }
 
 /* ***************************** Footer social media ******************** */

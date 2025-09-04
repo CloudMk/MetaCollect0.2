@@ -48,20 +48,21 @@
 <!-- Services Section -->
 <section id="services" class="section container-fluid my-5">
     <div class="container">
-        <h2 class="text-center mb-5">Nos Services</h2>
+        <h2 class="text-center mb-2">Nos Services</h2>
+        <div class="dash-title m-0 p-0 mb-1"></div>
         <div class="row text-center">
             <div class="col-md-6 mb-4">
                 <div class="p-4 rounded shadow-sm h-100">
-                    <dotlottie-player
-                        src="https://lottie.host/f4c0d5f6-2b6c-4862-8185-61e3b1375b9e/BRdataXR2U.lottie"
+                    <dotlottie-wc
+                        src="https://lottie.host/c6ebd602-62c8-4d2c-a664-10a5a76dec84/OaS0Y1zB1A.lottie"
                         background="transparent"
                         speed="1"
                         style="width: 100%; max-width: 300px; height: 300px; margin: auto;"
                         loop autoplay>
-                    </dotlottie-player>
+                    </dotlottie-wc>
                     <h3>Création de Projets</h3>
                     <p>Démarrez vos projets de collecte de données avec des outils intuitifs et personnalisables.</p>
-                    <a href="/new_project" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Nouveau Projet</a>
+                    <a href="/new_project" class="btn btn-primary text-light"><i class="bi bi-plus-circle me-2"></i>Nouveau Projet</a>
                 </div>
             </div>
             <div class="col-md-6 mb-4">
@@ -75,7 +76,7 @@
                     </dotlottie-player>
                     <h3>Gestion des Données</h3>
                     <p>Visualisez, analysez et gérez vos données collectées en temps réel.</p>
-                    <a href="/viewAll_project" class="btn btn-primary"><i class="bi bi-eye me-2"></i>Voir les Données</a>
+                    <a href="/viewAll_project" class="btn btn-primary text-light"><i class="bi bi-eye me-2"></i>Voir les Données</a>
                 </div>
             </div>
         </div>
@@ -85,38 +86,72 @@
 <!-- Blog Section -->
 <section id="blog" class="section container-fluid my-5">
     <div class="container">
-        <h2 class="text-center mb-5">Notre Blog</h2>
+        <h2 class="text-center mb-2">Notre Blog</h2>
+        <div class="dash-title m-0 p-0 mb-1"></div>
         <div class="row">
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Blog+Post+1" class="card-img-top" alt="Blog Post 1">
+                <div class="card card-blog">
+                    <img src="{{ url_for('static', filename='img/blog (2).jpg') }}" class="card-img-top" alt="Blog Post 1">
                     <div class="card-body">
                         <i class="bi bi-journal-text card-icon"></i>
-                        <h5 class="card-title">Comment optimiser la collecte de données</h5>
-                        <p class="card-text">Découvrez nos astuces pour collecter des données numériques efficacement.</p>
-                        <a href="#" class="btn btn-primary"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
+                        <h5 class="card-title text-light">Comment optimiser la collecte de données</h5>
+                        <p class="card-text text-light">Découvrez nos astuces pour collecter des données numériques efficacement.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Blog+Post+2" class="card-img-top" alt="Blog Post 2">
+                <div class="card card-blog">
+                    <img src="{{ url_for('static', filename='img/blog (3).jpg') }}" class="card-img-top" alt="Blog Post 2">
                     <div class="card-body">
                         <i class="bi bi-journal-text card-icon"></i>
-                        <h5 class="card-title">Les tendances en gestion de données</h5>
-                        <p class="card-text">Restez à jour avec les dernières innovations dans le domaine.</p>
-                        <a href="#" class="btn btn-primary"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
+                        <h5 class="card-title text-light">Les tendances en gestion de données</h5>
+                        <p class="card-text text-light">Restez à jour avec les dernières innovations dans le domaine.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Blog+Post+3" class="card-img-top" alt="Blog Post 3">
+                <div class="card card-blog">
+                    <img src="{{ url_for('static', filename='img/blog (1).jpg') }}" class="card-img-top" alt="Blog Post 3">
                     <div class="card-body">
                         <i class="bi bi-journal-text card-icon"></i>
-                        <h5 class="card-title">Sécuriser vos données numériques</h5>
-                        <p class="card-text">Apprenez comment protéger vos données avec MetaCollect.</p>
-                        <a href="#" class="btn btn-primary"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
+                        <h5 class="card-title text-light">Sécuriser vos données numériques</h5>
+                        <p class="card-text text-light">Apprenez comment protéger vos données avec MetaCollect.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card card-blog">
+                    <img src="{{ url_for('static', filename='img/blog (4).jpg') }}" class="card-img-top" alt="Blog Post 4">
+                    <div class="card-body">
+                        <i class="bi bi-journal-text card-icon"></i>
+                        <h5 class="card-title text-light">L'importance de l'analyse des données</h5>
+                        <p class="card-text text-light">Comprenez pourquoi l'analyse est essentielle pour la prise de décision.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card card-blog">
+                    <img src="{{ url_for('static', filename='img/blog (5).jpg') }}" class="card-img-top" alt="Blog Post 5">
+                    <div class="card-body">
+                        <i class="bi bi-journal-text card-icon"></i>
+                        <h5 class="card-title text-light">Utiliser l'IA pour la gestion des données</h5>
+                        <p class="card-text text-light">Découvrez comment l'IA transforme la gestion des données.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card card-blog">
+                    <img src="{{ url_for('static', filename='img/blog (6).jpg') }}" class="card-img-top" alt="Blog Post 6">
+                    <div class="card-body">
+                        <i class="bi bi-journal-text card-icon"></i>
+                        <h5 class="card-title text-light">Les meilleures pratiques de stockage de données</h5>
+                        <p class="card-text text-light">Apprenez à choisir les meilleures méthodes de stockage.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-arrow-right me-2"></i>Lire plus</a>
                     </div>
                 </div>
             </div>
@@ -127,38 +162,39 @@
 <!-- Portfolio Section -->
 <section id="portfolio" class="section container-fluid my-5">
     <div class="container">
-        <h2 class="text-center mb-5">Notre Portfolio</h2>
+        <h2 class="text-center mb-2">Notre Portfolio</h2>
+        <div class="dash-title m-0 p-0 mb-1"></div>
         <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Projet+1" class="card-img-top" alt="Projet 1">
+                    <img src="{{ url_for('static', filename='img/portfolio (1).jpg') }}" class="card-img-top" alt="Projet 1">
                     <div class="card-body">
                         <i class="bi bi-folder card-icon"></i>
-                        <h5 class="card-title">Projet de Collecte Big Data</h5>
-                        <p class="card-text">Un projet innovant pour collecter et analyser des données massives.</p>
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye me-2"></i>Voir le projet</a>
+                        <h5 class="card-title text-light">Projet de Collecte Big Data</h5>
+                        <p class="card-text text-light">Un projet innovant pour collecter et analyser des données massives.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-eye me-2"></i>Voir le projet</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Projet+2" class="card-img-top" alt="Projet 2">
+                    <img src="{{ url_for('static', filename='img/portfolio (3).jpg') }}" class="card-img-top" alt="Projet 2">
                     <div class="card-body">
                         <i class="bi bi-folder card-icon"></i>
-                        <h5 class="card-title">Analyse de Données IoT</h5>
-                        <p class="card-text">Gestion des données issues d'appareils connectés.</p>
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye me-2"></i>Voir le projet</a>
+                        <h5 class="card-title text-light">Analyse de Données IoT</h5>
+                        <p class="card-text text-light">Gestion des données issues d'appareils connectés.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-eye me-2"></i>Voir le projet</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Projet+3" class="card-img-top" alt="Projet 3">
+                    <img src="{{ url_for('static', filename='img/portfolio (2).jpg') }}" class="card-img-top" alt="Projet 3">
                     <div class="card-body">
                         <i class="bi bi-folder card-icon"></i>
-                        <h5 class="card-title">Plateforme de Visualisation</h5>
-                        <p class="card-text">Une solution pour visualiser vos données en temps réel.</p>
-                        <a href="#" class="btn btn-primary"><i class="bi bi-eye me-2"></i>Voir le projet</a>
+                        <h5 class="card-title text-light">Plateforme de Visualisation</h5>
+                        <p class="card-text text-light">Une solution pour visualiser vos données en temps réel.</p>
+                        <a href="#" class="btn btn-primary text-light"><i class="bi bi-eye me-2"></i>Voir le projet</a>
                     </div>
                 </div>
             </div>
@@ -169,22 +205,38 @@
 <!-- Petit Statique Section -->
 <section id="petit-statique" class="section container-fluid my-5">
     <div class="container">
-        <h2 class="text-center mb-5">Quelques Statistiques</h2>
+        <h2 class="text-center mb-2">Quelques Statistiques</h2>
+        <div class="dash-title m-0 p-0 mb-1"></div>
         <div class="row text-center">
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 mt-4">
                 <i class="bi bi-bar-chart stat-icon"></i>
                 <h3>10K+</h3>
                 <p>Projets de collecte réalisés</p>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 mt-4">
                 <i class="bi bi-people stat-icon"></i>
                 <h3>500+</h3>
                 <p>Clients satisfaits</p>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 mt-4">
                 <i class="bi bi-database stat-icon"></i>
                 <h3>1M+</h3>
                 <p>Données analysées</p>
+            </div>
+            <div class="col-md-4 mb-4 mt-4">
+                <i class="bi bi-clock stat-icon"></i>
+                <h3>24/7</h3>
+                <p>Support disponible</p>
+            </div>
+            <div class="col-md-4 mb-4 mt-4">
+                <i class="bi bi-star stat-icon"></i>
+                <h3>98%</h3>
+                <p>Taux de satisfaction client</p>
+            </div>
+            <div class="col-md-4 mb-4 mt-4">
+                <i class="bi bi-shield-lock stat-icon"></i>
+                <h3>100%</h3>
+                <p>Sécurité des données garantie</p>
             </div>
         </div>
     </div>

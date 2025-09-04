@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top w-100">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo MetaCollect" width="35" height="35" class="me-2 rounded-circle">
+        MetaCollect
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto d-flex gap-4">
+          <li class="nav-item"><a class="nav-link text-white border rounded-2" href="/auth"><i class="bi bi-box-arrow-in-right me-1"></i> Se connecter</a></li>
+          <li class="nav-item"><a class="nav-link text-white border rounded-2" href="{{ url_for('auth.register') }}"><i class="bi bi-person-plus me-1"></i> S’inscrire</a></li>
+          <li class="nav-item"><a class="nav-link text-white border rounded-2" href="{{ url_for('welcome.welcome') }}"><i class="bi bi-envelope me-1"></i> Retour</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+    <div class="contact-section">
+        <div class="illustration">
+            <dotlottie-wc
+            src="https://lottie.host/5a73d4a1-084e-4fd9-ad0d-cfeae71517f1/TOccdldJjp.lottie"
+            style="width: 500px;height: 450px"
+            speed="1"
+            autoplay
+            loop
+            ></dotlottie-wc>
+        </div>
+        <div class="contact-form">
+            <h2 class="text-white text-start">Contactez l'Admin</h2>
+            <form method="post" action="traitement.php">
+                <input type="text" name="nom" placeholder="Votre nom" required>
+                <input type="email" name="email" placeholder="Votre email" required>
+                <input type="text" name="sujet" placeholder="Sujet" required>
+                <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
+                <button type="submit">Envoyer le message</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"  type="module"></script>
+</body>
+</html>

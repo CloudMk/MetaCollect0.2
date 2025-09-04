@@ -23,6 +23,39 @@ body {
   overflow: hidden;
 }
 
+.text-3d {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 
+        1px 1px 0 #000,
+        2px 2px 0 #111,
+        3px 3px 0 #222,
+        4px 4px 0 #333;
+      transform-style: preserve-3d;
+      display: inline-block;
+      animation: rotate3d 15s linear infinite;
+    }
+
+    @keyframes rotate3d {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg);
+      }
+      25% {
+        transform: rotateX(15deg) rotateY(15deg);
+      }
+      50% {
+        transform: rotateX(0deg) rotateY(30deg);
+      }
+      75% {
+        transform: rotateX(-15deg) rotateY(15deg);
+      }
+      100% {
+        transform: rotateX(0deg) rotateY(0deg);
+      }
+    }
 /* Text Section */
 .text-section h1,
 .hero-section h3 {

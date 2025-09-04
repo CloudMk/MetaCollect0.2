@@ -68,6 +68,10 @@
     position: relative;
     overflow: hidden;
 }
+.card-blog img{
+    height: 210px;
+    object-fit: cover;
+}
 .card-body::after{
     position: absolute;
     content: "";

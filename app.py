@@ -20,9 +20,7 @@ def create_app():
         'SECRET_KEY', 'dev-secret-key-change-in-production'
     )
     database_url = os.environ.get(
-
-        'DATABASE_URL','postgresql://postgres:caril123@localhost:5432/metacollection'
-
+        'DATABASE_URL', 'postgresql://postgres:Faly@localhost/metacollection'
     )
 
     # Création automatique de la base si elle n'existe pas (uniquement localhost)

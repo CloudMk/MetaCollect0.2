@@ -1,0 +1,375 @@
+{% extends "base.html" %}
+
+{% block title %}Créer un formulaire - Data Collection{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Tableau de bord</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('projects') }}">Projets</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('project_detail', project_id=project.id) }}">{{ project.name }}</a></li>
+                    <li class="breadcrumb-item active">Créer un formulaire</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Créer un nouveau formulaire</h5>
+                </div>
+                <div class="card-body">
+                    <form id="formBuilder">
+                        <div class="mb-3">
+                            <label for="formName" class="form-label">Nom du formulaire *</label>
+                            <input type="text" class="form-control" id="formName" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="formDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="formDescription" rows="3"></textarea>
+                        </div>
+
+                        <h6 class="mb-3">Champs du formulaire</h6>
+                        
+                        <div id="fields-container" class="mb-3">
+                            <!-- Les champs seront ajoutés ici dynamiquement -->
+                        </div>
+
+                        <button type="button" class="btn btn-outline-primary mb-3" id="addField">
+                            <i class="fas fa-plus me-1"></i>Ajouter un champ
+                        </button>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('project_detail', project_id=project.id) }}" 
+                               class="btn btn-secondary">Annuler</a>
+                            <button type="submit" class="btn btn-primary" id="saveForm">
+                                <i class="fas fa-save me-1"></i>Créer le formulaire
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Aperçu du formulaire</h6>
+                </div>
+                <div class="card-body">
+                    <div id="form-preview" class="preview-form">
+                        <p class="text-muted text-center">Les champs apparaîtront ici</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">Types de champs disponibles</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn btn-outline-secondary w-100 btn-sm" onclick="addFieldType('text')">
+                                <i class="fas fa-font me-1"></i>Texte
+                            </button>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn btn-outline-secondary w-100 btn-sm" onclick="addFieldType('email')">
+                                <i class="fas fa-envelope me-1"></i>Email
+                            </button>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn btn-outline-secondary w-100 btn-sm" onclick="addFieldType('number')">
+                                <i class="fas fa-hashtag me-1"></i>Nombre
+                            </button>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn btn-outline-secondary w-100 btn-sm" onclick="addFieldType('date')">
+                                <i class="fas fa-calendar me-1"></i>Date
+                            </button>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn btn-outline-secondary w-100 btn-sm" onclick="addFieldType('textarea')">
+                                <i class="fas fa-align-left me-1"></i>Texte long
+                            </button>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn btn-outline-secondary w-100 btn-sm" onclick="addFieldType('select')">
+                                <i class="fas fa-list me-1"></i>Liste
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const projectId = {{ project.id }};
+let fields = [];
+let fieldCounter = 0;
+
+document.getElementById('addField').addEventListener('click', () => addField());
+document.getElementById('formBuilder').addEventListener('submit', saveForm);
+
+function addFieldType(type) {
+    addField(type);
+}
+
+function addField(type = 'text') {
+    fieldCounter++;
+    const field = {
+        id: fieldCounter,
+        type: type,
+        name: '',
+        label: '',
+        required: false,
+        options: []
+    };
+    fields.push(field);
+    renderField(field);
+}
+
+function renderField(field) {
+    const container = document.getElementById('fields-container');
+    const fieldDiv = document.createElement('div');
+    fieldDiv.className = 'field-item mb-3';
+    fieldDiv.id = `field-${field.id}`;
+    
+    let optionsHtml = '';
+    if (field.type === 'select') {
+        optionsHtml = `
+            <div class="mt-2">
+                <label class="form-label small">Options</label>
+                <div id="options-${field.id}">
+                    ${field.options.map((opt, idx) => `
+                        <div class="input-group input-group-sm mb-1">
+                            <input type="text" class="form-control" value="${opt}" 
+                                   onchange="updateOption(${field.id}, ${idx}, this.value)">
+                            <button class="btn btn-outline-danger" type="button" 
+                                    onclick="removeOption(${field.id}, ${idx})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Nouvelle option" 
+                           id="new-option-${field.id}">
+                    <button class="btn btn-outline-primary" type="button" 
+                            onclick="addOption(${field.id})">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+    
+    fieldDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control form-control-sm mb-1" 
+                               placeholder="Nom du champ" value="${field.name}"
+                               onchange="updateField(${field.id}, 'name', this.value)">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control form-control-sm mb-1" 
+                               placeholder="Label" value="${field.label}"
+                               onchange="updateField(${field.id}, 'label', this.value)">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select form-select-sm" 
+                                onchange="updateField(${field.id}, 'type', this.value)">
+                            <option value="text" ${field.type === 'text' ? 'selected' : ''}>Texte</option>
+                            <option value="email" ${field.type === 'email' ? 'selected' : ''}>Email</option>
+                            <option value="number" ${field.type === 'number' ? 'selected' : ''}>Nombre</option>
+                            <option value="date" ${field.type === 'date' ? 'selected' : ''}>Date</option>
+                            <option value="textarea" ${field.type === 'textarea' ? 'selected' : ''}>Texte long</option>
+                            <option value="select" ${field.type === 'select' ? 'selected' : ''}>Liste</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-sm btn-danger" 
+                                onclick="removeField(${field.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" 
+                                   id="required-${field.id}" ${field.required ? 'checked' : ''}
+                                   onchange="updateField(${field.id}, 'required', this.checked)">
+                            <label class="form-check-label" for="required-${field.id}">
+                                Champ obligatoire
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                ${optionsHtml}
+            </div>
+        </div>
+    `;
+    
+    container.appendChild(fieldDiv);
+    updatePreview();
+}
+
+function updateField(fieldId, property, value) {
+    const field = fields.find(f => f.id === fieldId);
+    if (field) {
+        field[property] = value;
+        if (property === 'type') {
+            renderField(field);
+            document.getElementById(`field-${fieldId}`).replaceWith(document.getElementById(`field-${fieldId}`));
+        }
+        updatePreview();
+    }
+}
+
+function removeField(fieldId) {
+    fields = fields.filter(f => f.id !== fieldId);
+    document.getElementById(`field-${fieldId}`).remove();
+    updatePreview();
+}
+
+function addOption(fieldId) {
+    const field = fields.find(f => f.id === fieldId);
+    const input = document.getElementById(`new-option-${fieldId}`);
+    if (field && input.value.trim()) {
+        field.options.push(input.value.trim());
+        input.value = '';
+        renderField(field);
+        document.getElementById(`field-${fieldId}`).replaceWith(document.getElementById(`field-${fieldId}`));
+    }
+}
+
+function updateOption(fieldId, index, value) {
+    const field = fields.find(f => f.id === fieldId);
+    if (field && field.options[index]) {
+        field.options[index] = value;
+    }
+}
+
+function removeOption(fieldId, index) {
+    const field = fields.find(f => f.id === fieldId);
+    if (field) {
+        field.options.splice(index, 1);
+        renderField(field);
+        document.getElementById(`field-${fieldId}`).replaceWith(document.getElementById(`field-${fieldId}`));
+    }
+}
+
+function updatePreview() {
+    const preview = document.getElementById('form-preview');
+    if (fields.length === 0) {
+        preview.innerHTML = '<p class="text-muted text-center">Aucun champ ajouté</p>';
+        return;
+    }
+    
+    let html = '<form>';
+    fields.forEach(field => {
+        const required = field.required ? 'required' : '';
+        let fieldHtml = '';
+        
+        switch(field.type) {
+            case 'text':
+                fieldHtml = `<input type="text" class="form-control" ${required}>`;
+                break;
+            case 'email':
+                fieldHtml = `<input type="email" class="form-control" ${required}>`;
+                break;
+            case 'number':
+                fieldHtml = `<input type="number" class="form-control" ${required}>`;
+                break;
+            case 'date':
+                fieldHtml = `<input type="date" class="form-control" ${required}>`;
+                break;
+            case 'textarea':
+                fieldHtml = `<textarea class="form-control" rows="3" ${required}></textarea>`;
+                break;
+            case 'select':
+                const options = field.options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+                fieldHtml = `<select class="form-select" ${required}><option value="">Sélectionner...</option>${options}</select>`;
+                break;
+        }
+        
+        html += `
+            <div class="mb-3">
+                <label class="form-label">${field.label || 'Label'} ${field.required ? '<span class="text-danger">*</span>' : ''}</label>
+                ${fieldHtml}
+            </div>
+        `;
+    });
+    html += '</form>';
+    preview.innerHTML = html;
+}
+
+async function saveForm(e) {
+    e.preventDefault();
+    
+    const formData = {
+        name: document.getElementById('formName').value,
+        description: document.getElementById('formDescription').value,
+        fields: fields.map(f => ({
+            name: f.name || f.label.toLowerCase().replace(/\s+/g, '_'),
+            label: f.label,
+            type: f.type,
+            required: f.required,
+            options: f.options
+        }))
+    };
+    
+    if (formData.fields.length === 0) {
+        alert('Veuillez ajouter au moins un champ');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/create_form/${projectId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showAlert('Formulaire créé avec succès!');
+            setTimeout(() => {
+                window.location.href = `/project/${projectId}`;
+            }, 1500);
+        }
+    } catch (error) {
+        showAlert('Erreur lors de la création du formulaire', 'danger');
+    }
+}
+
+function showAlert(message, type = 'success') {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    setTimeout(() => alertDiv.remove(), 3000);
+}
+</script>
+{% endblock %}

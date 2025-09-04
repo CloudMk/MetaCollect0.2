@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetaCollect - Collecte de données</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/welcome.css') }}">
+</head>
+<body>
+  <div class="hero-section row align-items-center">
+    <div class="text-section col-md-7">
+      <h3>Bienvenue sur plateforme de Collection de données appuyer sur se connecter pour commencer</h3>
+      <p>
+        La <strong>collecte de données</strong> est la première étape pour toute analyse fiable.  
+        Grâce à notre plateforme, rassemblez, organisez et analysez vos informations facilement pour prendre de meilleures décisions.
+      </p>
+      <div class="mt-4">
+        <a href="/auth" class="btn btn-white">Se connecter</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-white">S’inscrire</a>
+      </div>
+    </div>
+    <div class="hero-image col-md-5 text-center mt-4 mt-md-0">
+      <div class="mb-4  rounded-3" data-aos="flip-left" data-aos-delay="100">
+        <dotlottie-player
+          src="https://lottie.host/f4c0d5f6-2b6c-4862-8185-61e3b1375b9e/BRdataXR2U.lottie"
+          background="transparent"
+          speed="1"
+          style="width: 100%; max-width: 400px; height: 400px; margin: auto;"
+          loop autoplay>
+        </dotlottie-player>
+    </div>
+  </div>
+
+  <!-- Cercle décoratif -->
+  <div class="gradient-circle"></div>
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+</body>
+</html>

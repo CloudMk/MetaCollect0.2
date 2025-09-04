@@ -1,0 +1,1 @@
+from .extensions import db, login_manager, migrate

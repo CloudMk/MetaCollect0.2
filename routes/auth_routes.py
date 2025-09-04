@@ -28,7 +28,7 @@ def login():
             if next_page and next_page.startswith('/'):
                 return redirect(next_page)
             
-            return redirect(url_for('dashboard.dashboard'))
+            return redirect(url_for('accueil.accueil'))
         
         flash('Identifiants invalides', 'error')
     

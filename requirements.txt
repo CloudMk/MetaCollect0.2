@@ -6,6 +6,8 @@ psycopg2-binary==2.9.7
 python-dotenv==1.0.0
 openpyxl==3.1.2
 
+# à propos.html 04/09/2025 18:00
+# contact.html 04/09/2025 18:00
 
 # Il faut lance avant le simuler le projet ☢☢☢☢☢☣☣☢☣⚠⚠⚠⚠☣☣☢☢
 # Commmande pour installer un nouvel bibliotheque nécessaire au projet

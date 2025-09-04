@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, session, url_for, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+from urllib.parse import urlparse, urljoin
 from database.models import User
 from extensions.extensions import db
 from email.mime.text import MIMEText
@@ -11,31 +12,37 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        
-        if user and check_password_hash(user.password, password):
-            # Connexion réussie
-            login_user(user)
+    # Si l'utilisateur est déjà connecté, redirigez-le vers la page d'accueil
+    if current_user.is_authenticated:
+        return redirect(url_for('accueil.accueil'))
 
-            # Ajouter paramètres dans la session
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        profil = request.form.get('profil')
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password, password):
+            login_user(user, remember=True)  
+            session['profil'] = user.profil if user.profil else 'default.png'
             session['username'] = user.username
-            session['profil'] = user.profil if user.profil else 'default.png'  # si pas d'image, on met par défaut
-            
             flash(f'Bienvenue {user.username} !', 'success')
-            
+
+            # Gestion sécurisée de la redirection avec next
             next_page = request.args.get('next')
-            if next_page and next_page.startswith('/'):
+            if next_page and is_safe_url(next_page):
                 return redirect(next_page)
-            
             return redirect(url_for('accueil.accueil'))
-        
+
         flash('Identifiants invalides', 'error')
-    
+
     return render_template('login.html')
 
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():

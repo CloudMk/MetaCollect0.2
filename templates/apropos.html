@@ -1,37 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h1>À Propos de Meta Collecte</h1>
-    <h2>Notre Mission</h2>
+<div class="container py-5 text-dark">
+    <h1 class="mb-4 text-center">À Propos de MetaCollect</h1>
+
+    <h2 class="mt-4">Notre Mission</h2>
     <p>
         Le projet Meta Collecte vise à rassembler et analyser des données de manière éthique 
         et responsable. Nous croyons que des données de qualité peuvent transformer des idées 
         en actions concrètes pour le bien commun.
     </p>
     
-    <h2>Nos Objectifs</h2>
-    <p>
-        - Collecter des données pertinentes et précises.<br>
-        - Assurer la transparence et la sécurité des données.<br>
-        - Fournir des analyses exploitables pour des décisions éclairées.
-    </p>
+    <h2 class="mt-4">Nos Objectifs</h2>
+    <ul>
+        <li>Collecter des données pertinentes et précises.</li>
+        <li>Assurer la transparence et la sécurité des données.</li>
+        <li>Fournir des analyses exploitables pour des décisions éclairées.</li>
+    </ul>
     
-    <h2>Notre Équipe</h2>
-    <div class="team">
-        <div class="team-member">
-            <h3>Jean Dupont</h3>
-            <p>Directeur de Projet</p>
+    <h2 class="mt-4 mb-3 text-center">Notre Équipe</h2>
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+            <div class="card h-100 text-center shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Jean Dupont</h3>
+                    <p class="card-text">Directeur de Projet</p>
+                </div>
+            </div>
         </div>
-        <div class="team-member">
-            <h3>Marie Curie</h3>
-            <p>Analyste de Données</p>
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+            <div class="card h-100 text-center shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Marie Curie</h3>
+                    <p class="card-text">Analyste de Données</p>
+                </div>
+            </div>
         </div>
-        <div class="team-member">
-            <h3>Pierre Martin</h3>
-            <p>Responsable Éthique</p>
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+            <div class="card h-100 text-center shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Pierre Martin</h3>
+                    <p class="card-text">Responsable Éthique</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

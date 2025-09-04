@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Créer un formulaire - Data Collection{% endblock %}
+
+{% block content %}
+<div class="contact-page">
+  <header>
+    <img src="logo.png" alt="Logo">
+    <nav>
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Support</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h1>Contactez-nous</h1>
+  <p>Nous sommes là pour répondre à vos questions et préoccupations.</p>
+
+  <form action="submit_contact.php" method="post">
+    <label for="name">Nom :</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">E-mail :</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="message">Message :</label>
+    <textarea id="message" name="message" required></textarea>
+
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <h2>Informations de Contact</h2>
+  <p>Adresse : 123 Rue Exemple, Ville, Pays</p>
+  <p>Téléphone : +33 1 23 45 67 89</p>
+  <p>Email : contact@exemple.com</p>
+
+  <h2>Suivez-nous</h2>
+  <a href="#">Facebook</a>
+  <a href="#">Twitter</a>
+  <a href="#">Instagram</a>
+
+  <footer>
+    <p>&copy; 2023 Votre entreprise. Tous droits réservés.</p>
+  </footer>
+</div>
+{% endblock %}

@@ -34,7 +34,7 @@
       
                     <!-- Accueil -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/accuiell">
+                        <a class="nav-link" href="{{ url_for('accueil.accueil') }}">
                             <i class="bi bi-house-fill me-1 theme"></i> Accueil
                         </a>
                     </li>
@@ -83,34 +83,44 @@
                             <i class="bi bi-info-circle-fill me-1 theme"></i> À propos
                         </a>
                     </li>
-      
-                    <!-- Profil utilisateur -->
-                    {% if current_user.is_authenticated %}
+                     {% if current_user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="{{ url_for('static', filename='uploads/' + current_user.profil) }}" width="30px" height="30px" class="rounded-circle me-2" alt="{{ current_user.username }}">
-                            
+                        <!-- Bouton du menu déroulant avec image de profil -->
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='img/' + (current_user.profil | default('default.png'))) }}"
+                                width="40" height="40"
+                                class="rounded-circle me-2"
+                                alt="{{ current_user.username | default('Utilisateur') }}'s profile picture">
                         </a>
-                        <ul class="dropdown-menu text-white dropdown-menu-end">
+                        <!-- Menu déroulant -->
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <!-- Affichage de l'ID utilisateur -->
+                            <li class="dropdown-item-text">
+                                <i class="bi bi-person me-2"></i>ID Utilisateur : {{ current_user.id }}
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <!-- Lien vers le profil -->
                             <li>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                <a class="dropdown-item" href="{{ url_for('profil.profil') }}">
                                     <i class="bi bi-person-circle me-2 theme"></i> Profil
                                 </a>
                             </li>
+                            <!-- Option pour le mode sombre -->
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="#" id="toggle-dark-mode">
                                     <i class="bi bi-moon-stars me-2 theme"></i> Mode Sombre
                                 </a>
                             </li>
+                            <!-- Lien de déconnexion -->
                             <li>
-                                <a class="dropdown-item" href="{{ url_for('logout') }}">
+                                <a class="dropdown-item" href="#">
                                     <i class="bi bi-box-arrow-right me-2 theme"></i> Déconnexion
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    {% endif %}
-      
+                {% endif %}
+
                 </ul>
             </div>
         </div>

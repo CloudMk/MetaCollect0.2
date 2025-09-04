@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;900&display=swap');
 .nav-link i{
   font-weight: 900;
-  font-size: 25px;
+  font-size: 20px;
 }
 .section {
   min-height: 100vh;
@@ -59,13 +59,6 @@
   color: #f29c1f !important;
 }
 
-h1, h2, h3, h4, h6, p,  a ,marquee{
-  font-family: "Bodoni Moda", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-size: larger !important;
-}
 
 /* *****************************Many Section ******************** */
 .theme-bg{

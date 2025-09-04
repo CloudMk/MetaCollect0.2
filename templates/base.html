@@ -34,7 +34,7 @@
       
                     <!-- Accueil -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/accuiel">
+                        <a class="nav-link" href="{{ url_for('accueil.accueil') }}">
                             <i class="bi bi-house-fill me-1 theme"></i> Accueil
                         </a>
                     </li>
@@ -88,10 +88,15 @@
                     {% if current_user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="{{ url_for('static', filename='uploads/' + current_user.profil) }}" width="30px" height="30px" class="rounded-circle me-2" alt="{{ current_user.username }}">
-                            
+                            <!-- Photo de profil -->
+                            <img src="{{ url_for('static', filename='uploads/' + current_user.profil) }}" 
+                                width="30" height="30" 
+                                class="rounded-circle me-2" 
+                                alt="{{ current_user.username }}">
+                            <!-- Nom d'utilisateur -->
+                            <span class="fw-bold">{{ current_user.username }}</span>
                         </a>
-                        <ul class="dropdown-menu text-white dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li>
                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
                                     <i class="bi bi-person-circle me-2 theme"></i> Profil
@@ -110,7 +115,6 @@
                         </ul>
                     </li>
                     {% endif %}
-      
                 </ul>
             </div>
         </div>

@@ -16,15 +16,17 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         
-        session['username'] = request.form.get('username')
-        session['profil'] = request.form.get('profil')
-        
         if user and check_password_hash(user.password, password):
+            # Connexion réussie
             login_user(user)
+
+            # Ajouter paramètres dans la session
+            session['username'] = user.username
+            session['profil'] = user.profil if user.profil else 'default.png'  # si pas d'image, on met par défaut
+            
             flash(f'Bienvenue {user.username} !', 'success')
             
             next_page = request.args.get('next')
-            
             if next_page and next_page.startswith('/'):
                 return redirect(next_page)
             
@@ -33,6 +35,7 @@ def login():
         flash('Identifiants invalides', 'error')
     
     return render_template('login.html')
+
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():

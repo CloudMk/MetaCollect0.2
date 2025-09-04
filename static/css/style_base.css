@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;900&display=swap');
+.nav-link i{
+  font-weight: 900;
+  font-size: 25px;
+}
+.section {
+  min-height: 100vh;
+  padding: 50px 0;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.section.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+#accueil {
+  background: linear-gradient(135deg, #007bff, #00c4b4);
+  color: white;
+}
+#services, #blog, #portfolio, #petit-statique {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  margin: 20px 0;
+}
+.carousel img {
+  max-height: 500px;
+  object-fit: cover;
+}
+.btn-primary {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+.btn-primary:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+.section-header i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #28a745;
+}
+@media (max-width: 768px) {
+  .carousel img {
+      max-height: 300px;
+  }
+}
+/* ***************************************** NavBar ************************ */
+.navbar{
+    background: linear-gradient(135deg, #0a1f3c, #1f3f7c);
+  transition: 1s all cubic-bezier(.47, 1.64, .41, .8);
+}
+.nav-link{
+    transition: 0.5s all cubic-bezier(.47, 1.64, .41, .8);
+    color: #fff !important;
+}
+.nav-link:hover, .theme{
+  color: #f29c1f !important;
+}
+
+h1, h2, h3, h4, h6, p,  a ,marquee{
+  font-family: "Bodoni Moda", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* *****************************Many Section ******************** */
+.theme-bg{
+    background: linear-gradient(135deg, #0a1f3c, #1f3f7c);
+}
+.theme-bg-transparent{
+    background: linear-gradient(135deg, #0a1f3caf, #1f3f7caf);
+    transition: 1s all cubic-bezier(.47, 1.64, .41, .8) !important;
+}
+
+/* ***************************** Footer social media ******************** */
+.paw{
+    background: linear-gradient(135deg, #0a1f3c, #1f3f7c);
+}
+.socialMedia{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s all cubic-bezier(.47, 1.64, .41, .8);
+}
+.sci{
+  position: relative;
+  display: flex;
+  width: 250px;
+}
+.sci li{
+  list-style: none;
+}
+.sci li::before{
+  content: attr(data-text);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  pointer-events: none;
+  font-weight: 700;
+    transition: 0.5s all cubic-bezier(.47, 1.64, .41, .8);
+  opacity: 0;
+}
+.sci li:hover::before{
+  opacity: 0.5;
+  transform: translate(-50%, 15%);
+}
+.sci li a{
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1a1a1a;
+  border-radius: 10px;
+  text-decoration: none;
+  margin: 10px;
+  font-size: 1.5rem;
+  transform-style: preserve-3d;
+  perspective: 500px;
+  transition: background 0.25s;
+  box-shadow: 0 25px 35px rgba(0,0,0,0.1);
+}
+.js-tilt-glare{
+  border-radius: 10px;
+}
+.sci li a:hover.bi{
+  background: var(--socialColor);
+}
+.sci li a .bi{
+  transition:  0.25s;
+  pointer-events: none;
+}
+.sci li a:hover .bi{
+  color: #fff;
+  transform: scale(1.55) translateZ(50px);
+}
+.dropdown-menu{
+  background: linear-gradient(135deg, #0a1f3c, #1f3f7c) !important;
+}
+nav li .dropdown-item{
+  color: #fff !important;
+  transition: 0.5s all cubic-bezier(.47, 1.64, .41, .8);
+}
+nav li .dropdown-item:hover{
+  color: #1f3f7c !important;
+}
+.dash_right{
+  opacity: 1;
+  background-color: white;
+}
+.polygone{
+  color: #f29c1f;
+}
+.polygone::after{
+  content: "";
+  position: absolute;
+  background-color: #fff;
+  width: 100px;
+  margin-top: 2px;
+  display: block;
+  height: 5px;
+  clip-path: polygon(
+        0% 20%,   /* coin gauche haut */
+        15% 30%, 
+        15% 0%, 
+        85% 0%, 
+        85% 30%, 
+        100% 30%, 
+        100% 70%, 
+        85% 70%, 
+        85% 100%, 
+        15% 100%, 
+        15% 70%, 
+        0% 70%
+    );
+}
+.for-icon{
+    transform-style: preserve-3d;
+    width: max-content;
+    perspective: 500px;
+    transition: 0.5s all cubic-bezier(.47, 1.64, .41, .8);
+}
+.for-icon:hover i{
+    animation: rotate3D 2s linear infinite;
+    transform: rotateY(0deg);
+}
+.for-icon:hover i::after{
+    content: "";
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 2px;
+    transform: translate(30%, 50%);
+    background-color: black;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.719);
+}
+@keyframes rotate3D{
+    from{
+        transform: rotateY(360deg);
+    }
+}
+/* *************************** Scroll to top ********************* */
+.scrollUp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  border-radius: 50%;
+  padding: 0.125em;
+  text-decoration: none;
+  opacity: 0;
+  z-index: 1000;
+  background-image: linear-gradient(to bottom, #d5d5d5, #023e7a);
+  box-shadow: 0 1px 1px rgb(255 255 255 / 0.6);
+  font-size: 1.5em;
+  user-select: none;
+  transition: 0.5s all cubic-bezier(.47, 1.64, .41, .8) !important;
+}
+.scrollUp.active{
+  bottom: 2rem;
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(-10px);
+}
+.scrollUp:hover {
+  cursor: pointer;
+}
+.scrollUp:hover .inner-scrollUp .button-scrollUp svg {
+  fill: #f29c1f;
+  transition: 0.5s all cubic-bezier(.47, 1.64, .41, .8) !important;
+}
+.inner-scrollUp {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  background: linear-gradient(135deg, #0a1f3c, #1f3f7c);
+  box-shadow:
+    inset 0 0 0.0625em 0.125em rgb(255 255 255 / 0.2),
+    inset 0 0.0625em 0.125em rgb(0 0 0 / 0.4);
+}
+.button-scrollUp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(135deg, #0a1f3c, #1f3f7c);
+  box-shadow:
+    inset 0 -0.0625em 0.0625em 0.125em rgb(0 0 0 / 0.1),
+    inset 0 -0.125em 0.0625em rgb(0 0 0 / 0.2),
+    inset 0 0.1875em 0.0625em rgb(255 255 255 / 0.3),
+    0 0.125em 0.125em rgb(0 0 0 / 0.5);
+    transition: 0.5s all cubic-bezier(.47, 1.64, .41, .8) !important;
+}
+.button-scrollUp:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+/* ************************* Scroll Indicator circle **************************** */
+.button-scrollUp .scroll-circle{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%) rotate(270deg);
+}
+.button-scrollUp .scroll-circle circle{
+  width: 100%;
+  height: 100%;
+  fill: transparent;
+  stroke: white;
+  stroke-width: 4px;
+  transform: translate(5px, 5px);
+}
+#circleIndicator{
+  stroke-dasharray: 126;
+  stroke: #023e7a;
+}
+.scrollUp:hover .inner-scrollUp .button-scrollUp .scroll-circle circle {
+  stroke: #f29c1f;
+  transition: 0.5s stroke cubic-bezier(.47, 1.64, .41, .8) !important;
+}

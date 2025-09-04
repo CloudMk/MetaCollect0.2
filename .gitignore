@@ -1,2 +1,6 @@
 #__pycache__
 *__pycache__/
+
+
+# pour eviter le conflit entre le config du database
+app.py

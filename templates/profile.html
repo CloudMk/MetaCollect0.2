@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Profil - Data Collection{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h2 mb-4">Mon Profil</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Informations du compte</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Nom d'utilisateur</label>
+                            <input type="text" class="form-control" value="{{ current_user.username }}" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="{{ current_user.email }}" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Membre depuis</label>
+                            <input type="text" class="form-control" 
+                                   value="{{ current_user.created_at.strftime('%d/%m/%Y') }}" readonly>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Les informations du profil ne peuvent pas être modifiées pour le moment.
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Statistiques</h5>
+                </div>
+                <div class="card-body">
+                    {% set total_projects = current_user.projects|length %}
+                    {% set total_forms = namespace(count=0) %}
+                    {% set total_submissions = namespace(count=0) %}
+                    
+                    {% for project in current_user.projects %}
+                        {% set total_forms.count = total_forms.count + project.forms|length %}
+                        {% for form in project.forms %}
+                            {% set total_submissions.count = total_submissions.count + form.submissions|length %}
+                        {% endfor %}
+                    {% endfor %}
+                    
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <h4 class="text-primary">{{ total_projects }}</h4>
+                            <small class="text-muted">Projets créés</small>
+                        </div>
+                        <div class="col-4">
+                            <h4 class="text-success">{{ total_forms.count }}</h4>
+                            <small class="text-muted">Formulaires créés</small>
+                        </div>
+                        <div class="col-4">
+                            <h4 class="text-info">{{ total_submissions.count }}</h4>
+                            <small class="text-muted">Soumissions reçues</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Actions rapides</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('create_project') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>Nouveau projet
+                        </a>
+                        <a href="{{ url_for('projects') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-folder me-1"></i>Mes projets
+                        </a>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                            <i class="fas fa-sign-out-alt me-1"></i>Déconnexion
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Support</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">Besoin d'aide ?</p>
+                    <div class="d-grid gap-2">
+                        <a href="mailto:support@datacollection.com" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-envelope me-1"></i>Contacter le support
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-book me-1"></i>Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

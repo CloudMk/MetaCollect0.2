@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Data Collection App{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body >
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a href="{{ url_for('dashboard.dashboard') }}" class="navbar-brand d-flex align-items-center text-decoration-none">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" width="40" class="me-2">
+                <span class="fw-bold text-white fs-4 m-0">MetaCollect</span>
+            </a>
+
+            <!-- Bouton pour mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/accueil">
+                            <i class="fas fa-home me-1 text-warning"></i> Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard.dashboard') }}">
+                            <i class="fas fa-folder-plus me-1 text-warning"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('projects.create_project') }}">
+                            <i class="fas fa-folder-plus me-1 text-warning"></i> Create_Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('projects.create_project') }}">
+                            <i class="fas fa-folder-open me-1 text-warning"></i> All_Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">
+                            <i class="fas fa-envelope me-1 text-warning"></i> Contact
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/help">
+                            <i class="fas fa-info-circle me-1 text-warning"></i> Apropos
+                        </a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                {{ current_user.profil }}{{ current_user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                        <i class="fas fa-id-badge me-1"></i> Profil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('logout') }}">
+                                        <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4 flex-grow-1">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer dynamique -->
+    <footer class="text-light pt-5 pb-3 mt-5">
+        <div class="container">
+            <div class="row">
+
+                <!-- Menu / Liens rapides -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold">Menu</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('dashboard.dashboard') }}" class="text-light text-decoration-none">Creation nouveau projet</a></li>
+                        <li><a href="{{ url_for('projects.projects') }}" class="text-light text-decoration-none">Affichage Projet</a></li>
+                        <li><a href="{{ url_for('auth.login') }}" class="text-light text-decoration-none">Authentification</a></li>
+                        <li><a href="{{ url_for('auth.register') }}" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Avantages / Services -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold">Avantages</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check-circle me-2"></i>Collecte rapide de données</li>
+                        <li><i class="fas fa-check-circle me-2"></i>Interface intuitive</li>
+                        <li><i class="fas fa-check-circle me-2"></i>Sécurisé et fiable</li>
+                        <li><i class="fas fa-check-circle me-2"></i>Support 24/7</li>
+                    </ul>
+                </div>
+
+                <!-- Lieu / Contact -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold">Contact</h5>
+                    <p class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>Antananarivo, Madagascar</p>
+                    <p class="mb-1"><i class="fas fa-envelope me-2"></i>support@metacollect.com</p>
+                    <p class="mb-0"><i class="fas fa-phone me-2"></i>+261 34 12 345 67</p>
+                </div>
+
+                <!-- Logo / Social -->
+                <div class="col-md-3 mb-4 text-center text-md-start">
+                    <h5 class="fw-bold">MetaCollect</h5>
+                    <div class="mt-4">
+                        <a href="#" class="text-light me-2 fs-4"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light me-2 fs-4"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-2 fs-4"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-light me-2 fs-4"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="bg-secondary">
+
+            <div class="text-center">
+                <small>© {{ current_year if current_year else 2025 }} MetaCollect. Tous droits réservés.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal pour modifier profil -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('update_profile.update_profile') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Modifier Profil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nom d'utilisateur</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ current_user.username }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" required>
+                    </div>
+                    <!-- Ajouter d'autres champs selon ton modèle User -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/forms.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

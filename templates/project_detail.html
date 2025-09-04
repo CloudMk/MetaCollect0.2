@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} - Data Collection{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Tableau de bord</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('projects') }}">Projets</a></li>
+                    <li class="breadcrumb-item active">{{ project.name }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h2">{{ project.name }}</h1>
+                    <p class="text-muted">{{ project.description }}</p>
+                    <small class="text-muted">
+                        <i class="fas fa-calendar me-1"></i>
+                        {{ project.start_date.strftime('%d/%m/%Y') }} - {{ project.end_date.strftime('%d/%m/%Y') }}
+                    </small>
+                </div>
+                <div>
+                    <a href="{{ url_for('create_form', project_id=project.id) }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Nouveau formulaire
+                    </a>
+                    <a href="{{ url_for('view_data', project_id=project.id) }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-table me-1"></i>Voir les données
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Formulaires du projet</h5>
+                </div>
+                <div class="card-body">
+                    {% if project.forms %}
+                        <div class="row">
+                            {% for form in project.forms %}
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="border p-3 rounded">
+                                    <h6>{{ form.name }}</h6>
+                                    <p class="text-muted small">{{ form.description[:50] }}{% if form.description|length > 50 %}...{% endif %}</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <small class="text-muted">{{ form.submissions|length }} soumissions</small>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   id="share-{{ form.id }}" {{ 'checked' if form.is_shared else '' }}
+                                                   onchange="toggleShare({{ form.id }}, this.checked)">
+                                            <label class="form-check-label" for="share-{{ form.id }}">
+                                                <small>Partagé</small>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2">
+                                        <a href="{{ url_for('view_form', form_id=form.id) }}" 
+                                           class="btn btn-outline-primary btn-sm" target="_blank">
+                                            <i class="fas fa-external-link-alt me-1"></i>Voir le formulaire
+                                        </a>
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-secondary" 
+                                                    onclick="copyShareLink({{ form.id }})">
+                                                <i class="fas fa-link"></i>
+                                            </button>
+                                            <a href="{{ url_for('export_data', form_id=form.id, format='csv') }}" 
+                                               class="btn btn-outline-success">
+                                                <i class="fas fa-download"></i> CSV
+                                            </a>
+                                            <a href="{{ url_for('export_data', form_id=form.id, format='excel') }}" 
+                                               class="btn btn-outline-success">
+                                                <i class="fas fa-file-excel"></i> Excel
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                            <h5>Aucun formulaire créé</h5>
+                            <p>Créez votre premier formulaire pour ce projet</p>
+                            <a href="{{ url_for('create_form', project_id=project.id) }}" 
+                               class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i>Créer un formulaire
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function toggleShare(formId, isShared) {
+    fetch(`/api/form/${formId}/share`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ shared: isShared })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showAlert(isShared ? 'Formulaire partagé avec succès' : 'Partage désactivé');
+        }
+    });
+}
+
+function copyShareLink(formId) {
+    const shareUrl = `${window.location.origin}/form/${formId}/view`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+        showAlert('Lien copié dans le presse-papiers');
+    });
+}
+
+function showAlert(message, type = 'success') {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.querySelector('.container-fluid').insertBefore(alertDiv, document.querySelector('.container-fluid').firstChild);
+    setTimeout(() => alertDiv.remove(), 3000);
+}
+</script>
+{% endblock %}

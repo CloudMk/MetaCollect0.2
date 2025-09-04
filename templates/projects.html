@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Mes Projets - Data Collection{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">Mes Projets</h1>
+                <a href="{{ url_for('projects.create_project') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i>Nouveau projet
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for project in projects %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">{{ project.name }}</h5>
+                    <span class="badge bg-info text-dark">{{ project.forms|length }} Formulaire{% if project.forms|length > 1 %}s{% endif %}</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-muted">{{ project.description[:120] }}{% if project.description|length > 120 %}...{% endif %}</p>
+
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ project.start_date.strftime('%d/%m/%Y') }} - {{ project.end_date.strftime('%d/%m/%Y') }}
+                        </small>
+                    </div>
+
+                    <div class="row text-center mb-3">
+                        <div class="col-6 border-end">
+                            <h6 class="mb-0">{{ project.forms|length }}</h6>
+                            <small class="text-muted">Formulaires</small>
+                        </div>
+                        <div class="col-6">
+                            {% set total_submissions = namespace(count=0) %}
+                            {% for form in project.forms %}
+                                {% set total_submissions.count = total_submissions.count + form.submissions|length %}
+                            {% endfor %}
+                            <h6 class="mb-0">{{ total_submissions.count }}</h6>
+                            <small class="text-muted">Soumissions</small>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                        <a href="{{ url_for('projects.project_detail', project_id=project.id) }}" 
+                           class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>Voir le projet
+                        </a>
+                        <a href="{{ url_for('projects.view_data', project_id=project.id) }}" 
+                           class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-table me-1"></i>Voir les données
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                <h4>Aucun projet</h4>
+                <p class="text-muted">Commencez par créer votre premier projet de collecte de données</p>
+                <a href="{{ url_for('projects.create_project') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i>Créer mon premier projet
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Optionnel : script pour rendre les cartes plus interactives -->
+<script>
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mouseenter', () => card.classList.add('shadow-lg'));
+    card.addEventListener('mouseleave', () => card.classList.remove('shadow-lg'));
+});
+</script>
+{% endblock %}

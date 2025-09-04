@@ -12,3 +12,9 @@ openpyxl==3.1.2
 pip install dotenv
 pip install flask_migrate
 pip install openpyxl 
+
+#04/09/2025 20:00
+#"Changement base.html et create_project.html"
+
+#04/09/2025 21:30
+#Ajouter page accueil.html avec son js et son css

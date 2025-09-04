@@ -1,0 +1,63 @@
+.section {
+    min-height: 100vh;
+    padding: 50px 0;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    background: linear-gradient(135deg, #0a1f3caf, #1f3f7caf);
+    color: #f29c1f;
+}
+.section.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#accueil {
+    color: #f29c1f;
+}
+
+#services, #blog, #portfolio, #petit-statique {
+    background: linear-gradient(135deg, #0a1f3caf, #1f3f7caf);
+    color: #f29c1f;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+/* Carousel */
+.carousel img {
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Boutons */
+.btn-primary {
+    background-color: #f29c1f;
+    border-color: #f29c1f;
+    color: #0a1f3c;
+    font-weight: bold;
+}
+.btn-primary:hover {
+    background-color: #d9840f;
+    border-color: #b36c0d;
+    color: #fff;
+}
+
+/* Icônes */
+.card-icon {
+    font-size: 2rem;
+    color: #f29c1f;
+    margin-bottom: 10px;
+}
+.stat-icon {
+    font-size: 3rem;
+    color: #f29c1f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .carousel img {
+        max-height: 300px;
+    }
+}

@@ -16,8 +16,10 @@
   transform: translateY(0);
 }
 #accueil {
-  background: linear-gradient(135deg, #007bff, #00c4b4);
-  color: white;
+  /* background: linear-gradient(135deg, #007bff, #00c4b4); */
+  margin-top: 80px !important;
+  color: #f29c1f !important;
+  background: transparent !important;
 }
 #services, #blog, #portfolio, #petit-statique {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

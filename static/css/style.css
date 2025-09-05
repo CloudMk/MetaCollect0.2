@@ -356,4 +356,13 @@ nav li a {
     }
     }
 
+    .creat_p{
+        background-image: url('../img/image (3).jpg');
+        background-attachment: fixed;
+        background-size: cover;
+    }
 
+
+.bg-backdrop{
+    backdrop-filter: blur(10px);
+}

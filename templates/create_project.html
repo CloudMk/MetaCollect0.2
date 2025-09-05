@@ -1,144 +1,57 @@
+
 {% extends "base.html" %}
 
 {% block title %}Créer un projet - Data Collection{% endblock %}
 
 {% block content %}
-<div class="container-fluid mb-5">
-    <!-- Statistiques -->
-    <div class="row mb-1 g-3">
-        <div class="col-md-3">
-            <div class="card bg-light shadow-sm text-center p-3 h-100 theme-bg">
-                <i class="fas fa-folder fa-2x text-primary mb-2"></i>
-                <div class="h3 mb-1 stat-counter text-light" data-target="{{ projects|length }}">0</div>
-                <div class="text-light">Projets actifs</div>
+<div class="row creat_p">
+    <div class="col-lg-8 mx-auto my-5 px-2">
+        <div class="card1">
+            <div class="card-header py-3 text-center fw-bold fs-2 theme-bg">
+                <h3><i class="fas fa-folder-plus me-2"></i>Créer un nouveau projet</h3>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card  bg-light shadow-sm text-center p-3 h-100 theme-bg">
-                <i class="fas fa-file-alt fa-2x text-success mb-2"></i>
-                {% set total_forms = namespace(count=0) %}
-                {% for project in projects %}
-                    {% set total_forms.count = total_forms.count + project.forms|length %}
-                {% endfor %}
-                <div class="h3 mb-1 stat-counter text-light" data-target="{{ total_forms.count }}">0</div>
-                <div class="text-light">Formulaires créés</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-light shadow-sm text-center p-3 h-100 theme-bg">
-                <i class="fas fa-database fa-2x text-info mb-2"></i>
-                {% set total_submissions = namespace(count=0) %}
-                {% for project in projects %}
-                    {% for form in project.forms %}
-                        {% set total_submissions.count = total_submissions.count + form.submissions|length %}
-                    {% endfor %}
-                {% endfor %}
-                <div class="h3 mb-1 stat-counter text-light" data-target="{{ total_submissions.count }}">0</div>
-                <div class="text-light">Soumissions reçues</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-light shadow-sm text-center p-3 h-100 theme-bg">
-                <i class="fas fa-share-alt fa-2x text-warning mb-2"></i>
-                {% set shared_forms = namespace(count=0) %}
-                {% for project in projects %}
-                    {% for form in project.forms %}
-                        {% if form.is_shared %}
-                            {% set shared_forms.count = shared_forms.count + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-                <div class="h3 mb-1 stat-counter text-light" data-target="{{ shared_forms.count }}">0</div>
-                <div class="text-light">Formulaires partagés</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Projets récents -->
-     <div class="d-flex align-items-center justify-content-center flex-wrap">
-        <div class="mt-5 cols-auto w-50">
-            <div class="col-12">
-                <div class="card shadow-sm">
-                    <div class="card-header d-flex justify-content-between align-items-center theme-bg">
-                        <h5 class="mb-0">Projets récents</h5>
-                        <a href="{{ url_for('projects.create_project') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus me-1"></i>Nouveau projet
+            <div class="card-body bg-backdrop py-3 px-3">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nom du projet</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="start_date" class="form-label">Date de début</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="end_date" class="form-label">Date de fin</label>
+                            <input type="date" class="form-control" id="end_date" name="end_date" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="form_type" class="form-label">Type de formulaire</label>
+                        <select class="form-select" id="form_type" name="form_type" required>
+                            <option value="unique">Formulaire unique</option>
+                            <option value="multi">Formulaires multiples</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i> Annuler
                         </a>
+                        <button type="submit" class="btn btn-primary theme-bg">
+                            <i class="fas fa-check me-1"></i> Créer le projet
+                        </button>
                     </div>
-                    <div class="card-body bg-light">
-                        {% if projects %}
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover align-middle" id="projects-table">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Nom</th>
-                                            <th>Description</th>
-                                            <th>Formulaires</th>
-                                            <th>Date de fin</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for project in projects[:5] %}
-                                        <tr>
-                                            <td><strong>{{ project.name }}</strong></td>
-                                            <td>{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</td>
-                                            <td><span class="badge bg-secondary">{{ project.forms|length }}</span></td>
-                                            <td>{{ project.end_date.strftime('%d/%m/%Y') }}</td>
-                                            <td>
-                                                <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn btn-sm btn-outline-primary">
-                                                    Voir
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {% else %}
-                            <div class="alert alert-info text-center py-4 theme-bg-transparent">
-                                <i class="fas fa-folder-open fa-3x mb-3 text-light"></i>
-                                <h5 class="text-light">Aucun projet créé</h5>
-                                <p class="text-light">Commencez par créer votre premier projet</p>
-                                <a href="{{ url_for('projects.create_project') }}" class="btn btn-primary">
-                                    <i class="fas fa-plus me-1"></i>Créer un projet
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-    // Animation compteur pour statistiques
-    document.addEventListener("DOMContentLoaded", () => {
-        const counters = document.querySelectorAll('.stat-counter');
-        counters.forEach(counter => {
-            const updateCount = () => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                const increment = Math.ceil(target / 100);
-
-                if (count < target) {
-                    counter.innerText = count + increment;
-                    setTimeout(updateCount, 20);
-                } else {
-                    counter.innerText = target;
-                }
-            };
-            updateCount();
-        });
-    });
-
-    // Optionnel : filtrage simple tableau
-    document.addEventListener("DOMContentLoaded", () => {
-        const table = document.getElementById("projects-table");
-        // Ici tu peux ajouter recherche ou tri via JS si besoin
-    });
-</script>
 {% endblock %}

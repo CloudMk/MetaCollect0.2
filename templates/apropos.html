@@ -1,7 +1,17 @@
 {% extends "base.html" %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/apropos.css') }}">
+{% endblock %}
+
 {% block content %}
-<div class="container py-5 text-dark">
-    <h1 class="mb-4 text-center">À Propos de MetaCollect</h1>
+<div class="container py-5 text-dark mt-5">
+    <div class="w-100 container-fluid img-area p-0 m-0">
+        <img src="{{ url_for('static', filename='img/image (8).jpg') }}" alt="Image">
+    </div>
+    <div class="w-100 first-apropos m-0 p-0">
+        <h1 class="mb-4 text-center">À Propos de MetaCollect</h1>
+    </div>
 
     <h2 class="mt-4">Notre Mission</h2>
     <p>
@@ -45,4 +55,15 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+        $(window).scroll(function(){
+            var scroll = $(window).scrollTop();
+            $(".img-area img").css({
+                width: (100 + scroll / 5) + "%"
+            });
+        });
+</script>
 {% endblock %}

@@ -366,3 +366,10 @@ nav li a {
 .bg-backdrop{
     backdrop-filter: blur(10px);
 }
+
+.message-alert{
+    position: fixed;
+    right: 2.5rem;
+    top: 2.5rem;
+    z-index: 99999;
+}

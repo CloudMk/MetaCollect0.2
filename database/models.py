@@ -11,21 +11,23 @@ class User(UserMixin, db.Model):
     profil = db.Column(db.String(200), default="user") 
     projects = db.relationship('Project', backref='owner', lazy=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    projects = db.relationship('Project', back_populates='user', cascade="all, delete-orphan")
 
 class Project(db.Model):
-    __tablename__ = "project"
+    __tablename__ = 'project'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text)
+    name = db.Column(db.String(150), nullable=False)
+    description = db.Column(db.Text, nullable=True)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
-    form_type = db.Column(db.String(20), default='unique')
-    
-    # 🔥 Correction ici : référence vers "users.id"
+    form_type = db.Column(db.String(50), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # clé étrangère qui lie au User
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    forms = db.relationship('Form', backref='project', lazy=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    # relation avec User
+    user = db.relationship('User', back_populates='projects')
 
 class Form(db.Model):
     __tablename__ = "form"

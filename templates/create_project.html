@@ -3,57 +3,6 @@
 {% block title %}Créer un projet - Data Collection{% endblock %}
 
 {% block content %}
-<!-- Section Statistiques -->
-<div class="container my-4" id="statsBlock">
-    <div class="row g-4">
-        <div class="col-md-3 col-sm-6">
-            <div class="card shadow-sm text-center p-3">
-                <div class="card-body">
-                    <i class="fas fa-folder fa-2x text-primary mb-2"></i>
-                    <h5 class="card-title">Total Projets</h5>
-                    <p class="fs-4 fw-bold">{{ projects|length }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card shadow-sm text-center p-3">
-                <div class="card-body">
-                    <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
-                    <h5 class="card-title">Projets terminés</h5>
-                    <p class="fs-4 fw-bold">
-                        {{ projects|selectattr("end_date", "lt", now)|list|length }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card shadow-sm text-center p-3">
-                <div class="card-body">
-                    <i class="fas fa-spinner fa-2x text-warning mb-2"></i>
-                    <h5 class="card-title">En cours</h5>
-                    <p class="fs-4 fw-bold">
-                        {{ projects|selectattr("end_date", "ge", now())|list|length }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card shadow-sm text-center p-3">
-                <div class="card-body">
-                    <i class="fas fa-clock fa-2x text-info mb-2"></i>
-                    <h5 class="card-title">Dernier projet</h5>
-                    {% if projects %}
-                        <p class="fw-bold">{{ projects[-1].name }}</p>
-                        <small>{{ projects[-1].start_date.strftime('%d/%m/%Y') }}</small>
-                    {% else %}
-                        <p class="text-muted">Aucun</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Formulaire de création projet -->
 <div class="row justify-content-center align-items-center vh-100" id="createForm" style="display: none;">
     <div class="col-lg-6 col-md-8 col-sm-10">
@@ -61,7 +10,7 @@
             <div class="card-header py-3 text-center fw-bold fs-4 theme-bg text-white">
                 <i class="fas fa-folder-plus me-2"></i>Créer un nouveau projet
             </div>
-            <div class="card-body bg-backdrop bg-transparent py-4 px-4">
+            <div class="card-body bg-backdrop  bg-transparent py-4 px-4">
                 <form method="POST">
                     <div class="mb-3">
                         <label for="name" class="form-label">Nom du projet</label>
@@ -107,7 +56,7 @@
 </div>
 
 <!-- Bloc projets récents -->
-<div id="projectsBlock" class="container my-4">
+<div id="projectsBlock" style="margin-left: 300px;">
     <div class="row">
         <div class="col-12">
             <div class="card shadow-sm">

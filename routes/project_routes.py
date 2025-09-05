@@ -1,42 +1,120 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, session
+from flask_login import current_user
+from database.models import Project, Form
+from extensions.extensions import db
 from datetime import datetime
-from database.models import Project, db
+from functools import wraps
 
-project_bp = Blueprint("projects", __name__)
+project_bp = Blueprint('projects', __name__)
 
-@project_bp.route("/projects/create", methods=["GET", "POST"])
+# Décorateur personnalisé pour vérifier la connexion
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('user_id'):  # ou 'username' selon ta session
+            flash("Vous devez être connecté pour accéder à cette page.", "warning")
+            return redirect(url_for('auth.login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Liste des projets de l'utilisateur
+@project_bp.route('/projects')
+@login_required
+def projects():
+    user_id = session.get('user_id')
+    projects = Project.query.filter_by(user_id=user_id).all() if user_id else []
+    return render_template('projects.html', projects=projects)
+
+# Création d'un projet
+@project_bp.route('/projects/create', methods=['GET', 'POST'])
 def create_project():
-    if request.method == "POST":
-        name = request.form.get("name")
-        description = request.form.get("description")
-        start_date = request.form.get("start_date")
-        end_date = request.form.get("end_date")
-        form_type = request.form.get("form_type")
-        user_id = session.get("user_id")
+    if request.method == 'POST':
+        project = Project(
+            name=request.form['name'],
+            description=request.form['description'],
+            start_date=datetime.strptime(request.form['start_date'], '%Y-%m-%d'),
+            end_date=datetime.strptime(request.form['end_date'], '%Y-%m-%d'),
+            form_type=request.form['form_type'],
+            user_id=session['user_id']  # ✅ déjà garanti
+        )
 
-        if not user_id:
-            flash("Vous devez être connecté pour créer un projet", "danger")
-            return redirect(url_for("auth_bp.login"))
+        db.session.add(project)
+        db.session.commit()
+        flash('Projet créé avec succès', 'success')
+        return redirect(url_for('projects.projects'))
 
-        try:
-            new_project = Project(
-                name=name,
-                description=description,
-                start_date=datetime.strptime(start_date, "%Y-%m-%d"),
-                end_date=datetime.strptime(end_date, "%Y-%m-%d"),
-                form_type=form_type,
-                user_id=user_id
-            )
-            db.session.add(new_project)
-            db.session.commit()
-            flash("Projet créé avec succès ✅", "success")
-            return redirect(url_for("projects.create_project"))
+    return render_template('create_project.html')
 
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Erreur lors de la création du projet : {str(e)}", "danger")
+# Détail d'un projet
+@project_bp.route('/projects/<int:project_id>', methods=['GET'])
+def project_detail(project_id):
+    user_id = session.get('user_id')
+    projects = Project.query.get_or_404(project_id)
+    if projects.user_id != user_id:
+        flash('Accès non autorisé', 'error')
+        return redirect(url_for('dashboard.dashboard'))
+    return render_template('project_detail.html', projects=projects)
 
-    # récupérer tous les projets
-    projects = Project.query.all()
+# Vue des données du projet
+@project_bp.route('/projects/<int:project_id>/data')
+def view_data(project_id):
+    user_id = session.get('user_id')
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != user_id:
+        flash('Accès non autorisé', 'error')
+        return redirect(url_for('dashboard.dashboard'))
+    forms = Form.query.filter_by(project_id=project_id).all()
+    return render_template('data_view.html', project=project, forms=forms)
 
-    return render_template("create_project.html",projects=projects,now=datetime.now())
+# Création d'un formulaire pour un projet
+@project_bp.route('/projects/<int:project_id>/create_form', methods=['GET', 'POST'])
+def create_form(project_id):
+    user_id = session.get('user_id')
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != user_id:
+        flash('Accès non autorisé', 'error')
+        return redirect(url_for('projects.projects'))
+
+    if request.method == 'POST':
+        name = request.form['name']
+        description = request.form['description']
+        new_form = Form(name=name, description=description, project_id=project.id)
+        db.session.add(new_form)
+        db.session.commit()
+        flash('Formulaire créé avec succès', 'success')
+        return redirect(url_for('projects.project_detail', project_id=project.id))
+
+    return render_template('create_form.html', project=project)
+
+# API pour partager/départager un formulaire
+@project_bp.route('/projects/form/<int:form_id>/share', methods=['POST'])
+def share_form(form_id):
+    user_id = session.get('user_id')
+    form = Form.query.get_or_404(form_id)
+    if form.project.user_id != user_id:
+        return jsonify({'success': False, 'message': 'Accès non autorisé'}), 403
+    data = request.get_json()
+    form.is_shared = data.get('shared', False)
+    db.session.commit()
+    return jsonify({'success': True, 'shared': form.is_shared})
+
+# Vue d'un formulaire
+@project_bp.route('/form/<int:form_id>/view')
+def view_form(form_id):
+    user_id = session.get('user_id')
+    form = Form.query.get_or_404(form_id)
+    if form.project.user_id != user_id:
+        flash('Accès non autorisé', 'error')
+        return redirect(url_for('projects.projects'))
+    return render_template('view_form.html', form=form)
+
+# Export CSV/Excel des données d'un formulaire
+@project_bp.route('/form/<int:form_id>/export/<string:format>')
+def export_data(form_id, format):
+    user_id = session.get('user_id')
+    form = Form.query.get_or_404(form_id)
+    if form.project.user_id != user_id:
+        flash('Accès non autorisé', 'error')
+        return redirect(url_for('projects.projects'))
+    # Ici tu peux générer le fichier CSV ou Excel selon `format`
+    return f"Export {format} pour le formulaire {form.name}"

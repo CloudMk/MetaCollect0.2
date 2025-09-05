@@ -10,28 +10,36 @@ import smtplib
 
 auth_bp = Blueprint('auth', __name__)
 
+# Fonction pour vérifier que la redirection est sûre
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    # Si l'utilisateur est déjà connecté, redirigez-le vers la page d'accueil
+    # Redirection si l'utilisateur est déjà connecté
     if current_user.is_authenticated:
         return redirect(url_for('accueil.accueil'))
 
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        profil = request.form.get('profil')
+
         user = User.query.filter_by(username=username).first()
 
         if user and check_password_hash(user.password, password):
-            login_user(user, remember=True)  
+            login_user(user, remember=True)
+
             session['profil'] = user.profil if user.profil else 'default.png'
             session['username'] = user.username
+
             flash(f'Bienvenue {user.username} !', 'success')
 
-            # Gestion sécurisée de la redirection avec next
             next_page = request.args.get('next')
             if next_page and is_safe_url(next_page):
                 return redirect(next_page)
+            
             return redirect(url_for('accueil.accueil'))
 
         flash('Identifiants invalides', 'error')

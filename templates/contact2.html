@@ -1,49 +1,107 @@
 {% extends "base.html" %}
 
-{% block title %}Créer un formulaire - Data Collection{% endblock %}
+{% block title %}Contact - Data Collection{% endblock %}
 
 {% block content %}
-<div class="contact-page">
-  <header>
-    <img src="logo.png" alt="Logo">
-    <nav>
-      <ul>
-        <li><a href="#">Accueil</a></li>
-        <li><a href="#">À propos</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Support</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <h1>Contactez-nous</h1>
-  <p>Nous sommes là pour répondre à vos questions et préoccupations.</p>
-
-  <form action="submit_contact.php" method="post">
-    <label for="name">Nom :</label>
-    <input type="text" id="name" name="name" required>
-
-    <label for="email">E-mail :</label>
-    <input type="email" id="email" name="email" required>
-
-    <label for="message">Message :</label>
-    <textarea id="message" name="message" required></textarea>
-
-    <button type="submit">Envoyer</button>
-  </form>
-
-  <h2>Informations de Contact</h2>
-  <p>Adresse : 123 Rue Exemple, Ville, Pays</p>
-  <p>Téléphone : +33 1 23 45 67 89</p>
-  <p>Email : contact@exemple.com</p>
-
-  <h2>Suivez-nous</h2>
-  <a href="#">Facebook</a>
-  <a href="#">Twitter</a>
-  <a href="#">Instagram</a>
-
-  <footer>
-    <p>&copy; 2023 Votre entreprise. Tous droits réservés.</p>
-  </footer>
+<!-- Section Header -->
+<div class="contact-header position-relative text-center text-white py-5" style="background: url('/static/images/header-bg.jpg') center/cover no-repeat;">
+  <h1 class="display-5 fw-bold" data-aos="fade-down">Contactez-nous</h1>
+  <p class="lead" data-aos="fade-up">Nous sommes là pour répondre à vos questions et préoccupations.</p>
 </div>
+
+<!-- Section Contact -->
+<div class="contact-section container py-5">
+  <div class="row g-4">
+
+    <!-- Colonne gauche : Infos + Carte -->
+    <div class="col-md-6" data-aos="fade-right">
+      <div class="shadow-sm rounded overflow-hidden bg-light p-4 h-100">
+        <h2 class="fw-bold mb-4 text-dark">Informations</h2>
+
+        <!-- Infos de contact -->
+        <p class="mb-2 text-dark"><i class="bi bi-telephone me-2"></i>+44 7723 723666</p>
+        <p class="mb-2 text-dark"><i class="bi bi-envelope me-2"></i>contact@admin.com</p>
+        <p class="mb-2 text-dark"><i class="bi bi-envelope me-2"></i>support@admin.com</p>
+        <p class="mb-2 text-dark"><i class="bi bi-geo-alt me-2"></i>1784 Griffin Street, Alabama</p>
+        <p class="mb-2 text-dark"><i class="bi bi-clock me-2"></i>Lundi - Vendredi : 9h00 - 18h00</p>
+        <p class="mb-2 text-dark"><i class="bi bi-clock me-2"></i>Samedi : 10h00 - 14h00</p>
+
+        <!-- Réseaux sociaux -->
+        <div class="mt-3">
+          <a href="#" class="me-2 text-dark"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#" class="me-2 text-dark"><i class="bi bi-twitter fs-5"></i></a>
+          <a href="#" class="me-2 text-dark"><i class="bi bi-instagram fs-5"></i></a>
+          <a href="#" class="text-dark"><i class="bi bi-linkedin fs-5"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne droite : Formulaire -->
+    <div class="col-md-6" data-aos="fade-left">
+      <div class="shadow-sm rounded bg-transparent p-4 h-100">
+        <h2 class="fw-bold mb-4 text-dark fs-1">Contact</h2>
+        <form action="{{ url_for('contacts.submit_contact') }}" method="post">
+          <div class="mb-3">
+            <input type="text" name="name" class="form-control form-control-lg" placeholder="Nom" required>
+          </div>
+          <div class="mb-3">
+            <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" required>
+          </div>
+          <div class="mb-3">
+            <textarea name="message" class="form-control form-control-lg" rows="6" placeholder="Message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-100">Envoyer</button>
+        </form>
+      </div>
+    </div>
+    
+  </div>
+  <!-- Carte Google -->
+        <div class="mt-4" style="height: 300px; overflow:hidden; border-radius:8px;">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.086024898985!2d-122.419415!3d37.774929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c3b4c6f0f%3A0x3f8b6e0f8a6c1a12!2s123%20Griffin%20Street%2C%20Alabama!5e0!3m2!1sen!2sfr!4v1600000000000!5m2!1sen!2sfr" 
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+          </iframe>
+        </div>
+</div>
+
+<!-- AOS animation -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, once: true });
+</script>
+
+<!-- Styles supplémentaires -->
+<style>
+body {
+  background-image: url('/static/img/image (8).jpg');
+}
+.contact-header {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+.contact-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+}
+.contact-header h1, .contact-header p {
+  position: relative;
+  z-index: 2;
+}
+.contact-section .shadow-sm {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.contact-section .shadow-sm:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+.contact-section button.btn-primary:hover {
+  background-color: #0d6efdcc;
+  transform: translateY(-2px);
+}
+</style>
 {% endblock %}

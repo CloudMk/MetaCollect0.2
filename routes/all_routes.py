@@ -12,9 +12,9 @@ from .help_routes import help_bp
 
 def register_routes(app):
     app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(project_bp, url_prefix='/projects')
-    app.register_blueprint(form_bp, url_prefix='/forms')
-    app.register_blueprint(data_bp, url_prefix='/data')
+    app.register_blueprint(project_bp)
+    app.register_blueprint(form_bp)
+    app.register_blueprint(data_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(welcome_bp)
     app.register_blueprint(update_bp)

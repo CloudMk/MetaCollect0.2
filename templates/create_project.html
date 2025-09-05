@@ -1,16 +1,67 @@
-
 {% extends "base.html" %}
 
 {% block title %}Créer un projet - Data Collection{% endblock %}
 
 {% block content %}
-<div class="row creat_p">
-    <div class="col-lg-8 mx-auto my-5 px-2">
-        <div class="card1">
-            <div class="card-header py-3 text-center fw-bold fs-2 theme-bg">
-                <h3><i class="fas fa-folder-plus me-2"></i>Créer un nouveau projet</h3>
+<!-- Section Statistiques -->
+<div class="container my-4" id="statsBlock">
+    <div class="row g-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm text-center p-3">
+                <div class="card-body">
+                    <i class="fas fa-folder fa-2x text-primary mb-2"></i>
+                    <h5 class="card-title">Total Projets</h5>
+                    <p class="fs-4 fw-bold">{{ projects|length }}</p>
+                </div>
             </div>
-            <div class="card-body bg-backdrop py-3 px-3">
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm text-center p-3">
+                <div class="card-body">
+                    <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                    <h5 class="card-title">Projets terminés</h5>
+                    <p class="fs-4 fw-bold">
+                        {{ projects|selectattr("end_date", "lt", now)|list|length }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm text-center p-3">
+                <div class="card-body">
+                    <i class="fas fa-spinner fa-2x text-warning mb-2"></i>
+                    <h5 class="card-title">En cours</h5>
+                    <p class="fs-4 fw-bold">
+                        {{ projects|selectattr("end_date", "ge", now())|list|length }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm text-center p-3">
+                <div class="card-body">
+                    <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                    <h5 class="card-title">Dernier projet</h5>
+                    {% if projects %}
+                        <p class="fw-bold">{{ projects[-1].name }}</p>
+                        <small>{{ projects[-1].start_date.strftime('%d/%m/%Y') }}</small>
+                    {% else %}
+                        <p class="text-muted">Aucun</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulaire de création projet -->
+<div class="row justify-content-center align-items-center vh-100" id="createForm" style="display: none;">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header py-3 text-center fw-bold fs-4 theme-bg text-white">
+                <i class="fas fa-folder-plus me-2"></i>Créer un nouveau projet
+            </div>
+            <div class="card-body bg-backdrop bg-transparent py-4 px-4">
                 <form method="POST">
                     <div class="mb-3">
                         <label for="name" class="form-label">Nom du projet</label>
@@ -41,10 +92,10 @@
                         </select>
                     </div>
                     
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-secondary">
+                    <div class="d-flex justify-content-between">
+                        <button type="button" id="cancelBtn" class="btn btn-secondary">
                             <i class="fas fa-times me-1"></i> Annuler
-                        </a>
+                        </button>
                         <button type="submit" class="btn btn-primary theme-bg">
                             <i class="fas fa-check me-1"></i> Créer le projet
                         </button>
@@ -54,4 +105,85 @@
         </div>
     </div>
 </div>
+
+<!-- Bloc projets récents -->
+<div id="projectsBlock" class="container my-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Projets récents</h5>
+                    <button id="showFormBtn" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i> Nouveau projet
+                    </button>
+                </div>
+                <div class="card-body bg-light">
+                    {% if projects %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle" id="projects-table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Description</th>
+                                        <th>Formulaires</th>
+                                        <th>Date de fin</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for project in projects[:5] %}
+                                    <tr>
+                                        <td><strong>{{ project.name }}</strong></td>
+                                        <td>{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</td>
+                                        <td><span class="badge bg-secondary">{{ project.forms|length }}</span></td>
+                                        <td>{{ project.end_date.strftime('%d/%m/%Y') }}</td>
+                                        <td>
+                                            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn btn-sm btn-outline-primary">
+                                                Voir
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info text-center py-4">
+                            <i class="fas fa-folder-open fa-3x mb-3"></i>
+                            <h5>Aucun projet créé</h5>
+                            <p>Commencez par créer votre premier projet</p>
+                            <button id="showFormBtn2" class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i> Créer un projet
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script JS -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const formDiv = document.getElementById("createForm");
+        const projectsBlock = document.getElementById("projectsBlock");
+        const showBtn1 = document.getElementById("showFormBtn");
+        const showBtn2 = document.getElementById("showFormBtn2");
+        const cancelBtn = document.getElementById("cancelBtn");
+
+        function showForm() {
+            formDiv.style.display = "flex"; // flex pour centrer verticalement
+            projectsBlock.style.display = "none"; // cacher les projets récents
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        if (showBtn1) showBtn1.addEventListener("click", showForm);
+        if (showBtn2) showBtn2.addEventListener("click", showForm);
+        if (cancelBtn) cancelBtn.addEventListener("click", function () {
+            formDiv.style.display = "none";
+            projectsBlock.style.display = "block"; // réafficher les projets
+        });
+    });
+</script>
 {% endblock %}

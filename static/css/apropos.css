@@ -1,0 +1,18 @@
+.first-apropos{
+    font-size: 40px;
+    font-weight: bold;
+}
+.img-area{
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+}
+.img-area img{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    object-fit: cover;
+}

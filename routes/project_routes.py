@@ -29,30 +29,31 @@ def projects():
 @project_bp.route('/projects/create', methods=['GET', 'POST'])
 def create_project():
     if request.method == 'POST':
-        user_id = session.get('user_id')
         project = Project(
             name=request.form['name'],
             description=request.form['description'],
             start_date=datetime.strptime(request.form['start_date'], '%Y-%m-%d'),
             end_date=datetime.strptime(request.form['end_date'], '%Y-%m-%d'),
             form_type=request.form['form_type'],
-            user_id=user_id
+            user_id=session['user_id']  # ✅ déjà garanti
         )
+
         db.session.add(project)
         db.session.commit()
         flash('Projet créé avec succès', 'success')
         return redirect(url_for('projects.projects'))
+
     return render_template('create_project.html')
 
 # Détail d'un projet
 @project_bp.route('/projects/<int:project_id>', methods=['GET'])
 def project_detail(project_id):
     user_id = session.get('user_id')
-    project = Project.query.get_or_404(project_id)
-    if project.user_id != user_id:
+    projects = Project.query.get_or_404(project_id)
+    if projects.user_id != user_id:
         flash('Accès non autorisé', 'error')
         return redirect(url_for('dashboard.dashboard'))
-    return render_template('project_detail.html', project=project)
+    return render_template('project_detail.html', projects=projects)
 
 # Vue des données du projet
 @project_bp.route('/projects/<int:project_id>/data')

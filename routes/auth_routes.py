@@ -10,7 +10,6 @@ import smtplib
 
 auth_bp = Blueprint('auth', __name__)
 
-# Fonction pour vérifier que la redirection est sûre
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
@@ -18,7 +17,6 @@ def is_safe_url(target):
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    # Redirection si l'utilisateur est déjà connecté
     if current_user.is_authenticated:
         return redirect(url_for('accueil.accueil'))
 

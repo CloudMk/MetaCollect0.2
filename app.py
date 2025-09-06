@@ -5,25 +5,18 @@ from extensions.extensions import db, login_manager, migrate
 from routes.all_routes import register_routes
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from urllib.parse import urlparse  # Assurez-vous que les modèles sont importés pour créer les tables
-
-# Charger les variables d'environnement depuis le fichier .env
+from urllib.parse import urlparse  
 load_dotenv()
 
 def create_app():
     app = Flask(__name__)
-
-    # ----------------------
-    # Configurations
-    # ----------------------
     app.config['SECRET_KEY'] = os.environ.get(
         'SECRET_KEY', 'dev-secret-key-change-in-production'
     )
     database_url = os.environ.get(
-        'DATABASE_URL', 'postgresql://postgres:4321@localhost/metacollection'
+        'DATABASE_URL', 'postgresql://postgres:Faly@localhost/metacollection'
     )
 
-    # Création automatique de la base si elle n'existe pas (uniquement localhost)
     if 'localhost' in database_url:
         create_database_if_not_exists(database_url)
 
@@ -61,20 +54,19 @@ def create_database_if_not_exists(database_url):
     """Créer automatiquement la base PostgreSQL si elle n'existe pas."""
     try:
         result = urlparse(database_url)
-        database_name = result.path[1:]  # Enlève le '/' au début du nom de la base
-
-        # Connexion à PostgreSQL pour vérifier et créer la base de données
+        database_name = result.path[1:]  
+        
         conn = psycopg2.connect(
             host=result.hostname,
             user=result.username,
             password=result.password,
             port=result.port or 5432,
-            database='postgres'  # Connexion à la base par défaut
+            database='postgres'  
         )
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cursor = conn.cursor()
         
-        # Vérification de l'existence de la base de données
+        
         cursor.execute("SELECT 1 FROM pg_database WHERE datname=%s", (database_name,))
         if not cursor.fetchone():
             cursor.execute(f'CREATE DATABASE "{database_name}"')

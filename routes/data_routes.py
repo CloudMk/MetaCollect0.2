@@ -9,16 +9,6 @@ from openpyxl import Workbook
 
 data_bp = Blueprint('data', __name__)
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        # Vérifie si l'utilisateur est connecté
-        if not session.get('user_id'):  # ou 'username' selon ta session
-            flash("Vous devez être connecté pour accéder à cette page.", "warning")
-            return redirect(url_for('auth.login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
 @data_bp.route('/export/<int:form_id>/<format>')
 def export_data(form_id, format):
     form = Form.query.get_or_404(form_id)
